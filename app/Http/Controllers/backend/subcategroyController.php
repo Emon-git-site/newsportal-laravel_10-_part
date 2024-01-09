@@ -27,6 +27,18 @@ class subcategroyController extends Controller
 
         return response()->json([
            'subcategories' => $subcategories,
-         ]);   
+         ])->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+         ->header('Pragma', 'no-cache')
+         ->header('Expires', '0');   
+     }
+
+
+     public function edit($id)
+     {
+        $subcategories = Subcategory::with('getCategory')->find($id);        
+        //   $subcategories = Subcategory::find($id);
+          return response()->json([
+             'subcategories' => $subcategories,
+           ]);  
      }
 }

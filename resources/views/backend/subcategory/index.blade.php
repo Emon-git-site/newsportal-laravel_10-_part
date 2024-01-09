@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -35,7 +34,7 @@
                             <tr>
                                 <th>SubCategory Name Bangla</th>
                                 <th>SubCategory Name English</th>
-                                 <th>Category</th>
+                                <th>Category</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -71,7 +70,8 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="bangla" class="form-label  @error('subcategory_bn') is-invalid @enderror">SubCategory
+                            <label for="bangla"
+                                class="form-label  @error('subcategory_bn') is-invalid @enderror">SubCategory
                                 Name Bangla</label>
                             <input type="text" class="form-control" id="bangla" name="" required>
                             @error('subcategory_bn')
@@ -93,7 +93,7 @@
 
 
     {{-- update category modal --}}
-    <div class="modal fade" id="category_update_modal">
+    <div class="modal fade" id="subcategory_update_modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -117,6 +117,10 @@
                             <label for="bangla" class="form-label">SubCategory Name Bangla</label>
                             <input type="text" class="form-control" id="bangla_update" name="subcategory_bn" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="bangla" class="form-label">Category Name </label>
+                            <select class="form-control" name="selectedCategory" id="selectedCategory"></select>
+                        </div>
 
                         <button type="submit" id="update_subcategory" class="btn btn-success btn-block">Submit</button>
                     </form>
@@ -132,6 +136,7 @@
 
 @section('script')
     <script>
+        $.ajaxSetup({ cache: false });
         // $(document).ready(function() {
         //     $(document).on('click')
         // });
@@ -217,10 +222,10 @@
                 type: "GET",
                 url: "/subcategory/subcategoryDataShow",
                 dataType: "json",
+                cache:false,
                 success: function(response) {
                     if (response.subcategories) {
                         // Clear existing rows from DataTable
-                        console.log(response.subcategories);
                         dataTable.clear();
 
                         // Loop through the categories and add rows to DataTable
@@ -229,7 +234,7 @@
                                 subcategory.subcategory_bn,
                                 subcategory.subcategory_en,
                                 subcategory.get_category.category_en,
-                                '<button class="btn btn-primary btn-sm"  onclick="subcategorySubDatashow(' +
+                                '<button class="btn btn-primary btn-sm"  onclick="fetchSubCategory(' +
                                 subcategory.id + ')">Update</button>' +
                                 '<a href="index/' + subcategory.id +
                                 '" class="btn btn-danger btn-sm" onclick="subcategoryDeleteAlert(event)">Delete</a>'
@@ -243,29 +248,59 @@
             });
         }
 
+
+
         fetchsubCategory(); // Call the fetchsubCategory function when the document is ready
 
 
-        // function fetchSubCategory(id) {
-        //     var subcategoryId = id;
+        function fetchSubCategory(id) {
+    var subcategoryId = id;
 
-        //     $('#subcategory_update_modal').modal('show');
+    // Fetch subcategory data into the update modal using AJAX
+    $.ajax({
+        type: "GET",
+        url: "/subcategory/subcategoryDataSho/" + subcategoryId + "?_=" + new Date().getTime(),      
+          dataType: "json",
+        cache:false,
+        success: function(response) {
+            let selectedCategory = response.subcategories.get_category.category_en;
+            // Set values after the modal is fully shown
+            $('#subcategory_update_modal').on('shown.bs.modal', function() {
+                $('input[name="id"]').val(response.subcategories.id);
+                $('input[name="subcategory_bn"]').val(response.subcategories.subcategory_bn);
+                $('input[name="subcategory_en"]').val(response.subcategories.subcategory_en);
+                // Get category data
+                $.ajax({
+                    type: "GET",
+                    url: "/category/categoryDataShow?_=" + new Date().getTime(),
+                    dataType: "json",
+                    cache:false,
+                    success: function(categoryResponse) {
+                        let selectElement = $('#selectedCategory');
+                        console.log(selectedCategory);
+                        // Clear existing options before appending new ones
+                        selectElement.empty();
+                        $.each(categoryResponse.categories, function(index, category) {
+                            let option = $('<option>');
+                            option.val(category.id);
+                            option.text(category.category_en);
+                              if (category.category_en === selectedCategory) {
+                                option.attr('selected', 'selected');
+                                 }
+                            selectElement.append(option);
+                        });
+                    }
+                });
+            });
 
-        //     // Fetch subcategory  data into update modal using AJAX
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "/subcategory/subcategoryDataSho/" + subcategoryId,
-        //         dataType: "json",
-        //         success: function(response) {
-        //             // Set values after the modal is fully shown
-        //             $('#subcategory_update_modal').on('shown.bs.modal', function() {
-        //                 $('input[name="id"]').val(response.subcategories.id);
-        //                 $('input[name="subcategory_bn"]').val(response.subcategories.subcategory_bn);
-        //                 $('input[name="subcategory_en"]').val(response.subcategories.subcategory_en);
-        //             });
-        //         }
-        //     });
-        // }
+            // Show the modal after setting values
+            $('#subcategory_update_modal').modal('show');
+        }
+    });
+}
+
+
+
 
         $.ajaxSetup({
             headers: {
@@ -273,39 +308,39 @@
             }
         });
 
-        // update subcategory modal data
-        // $(document).on('click', '#update_category', function(e) {
-        //     e.preventDefault();
-        //     let subcategory_id = $('#subcategory_id').val();
-        //     let subcategoryData = {
-        //         'subcategory_bn': $('#bangla_update').val(),
-        //         'subcategory_en': $('#english_update').val()
-        //     };
+        // update subcategory modal data show
+        $(document).on('click', '#update_subcategory', function(e) {
+            e.preventDefault();
+            let subcategory_id = $('#subcategory_id').val();
+            let subcategoryData = {
+                'subcategory_bn': $('#bangla_update').val(),
+                'subcategory_en': $('#english_update').val()
+            };
 
 
-        //     $.ajax({
-        //         type: "PUT",
-        //         url: "/subcategory/categoryDataSho/" + subcategory_id,
-        //         dataType: "json",
-        //         data: subcategoryData,
-        //         success: function(response) {
-        //             console.log(response);
-        //             $('input[name="subcategory_bn"]').val(response.subcategory_bn);
-        //             $('input[name="subcategory_en"]').val(response.subcategory_en);
+            $.ajax({
+                type: "PUT",
+                url: "/subcategory/categoryDataSho/" + subcategory_id,
+                dataType: "json",
+                data: subcategoryData,
+                success: function(response) {
+                    console.log(response);
+                    $('input[name="subcategory_bn"]').val(response.subcategory_bn);
+                    $('input[name="subcategory_en"]').val(response.subcategory_en);
 
-        //             $('#category_update_modal').modal('hide');
-        //             fetchSubCategory();
+                    $('#category_update_modal').modal('hide');
+                    // console.log(fetchSubCategory());
 
-        //             // Display toastr message
+                    // Display toastr message
 
-        //             if (response.status == 200) {
-        //                 toastr.success(response.subcategory_update);
-        //             }
+                    if (response.status == 200) {
+                        toastr.success(response.subcategory_update);
+                    }
 
 
-        //         }
-        //     });
+                }
+            });
 
-        // });
+        });
     </script>
 @endsection

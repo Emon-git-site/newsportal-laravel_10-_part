@@ -136,6 +136,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <!-- Toastr -->
     <script src="{{ asset('backend') }}/plugins/toastr/toastr.min.js"></script>
+    <script>$.ajaxSetup({ cache: false });</script>
 @yield('script')
 </body>
 
