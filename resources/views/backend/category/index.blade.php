@@ -29,7 +29,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped">
+                    <table id="categoryTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Category Name Bangla</th>
@@ -123,18 +123,15 @@
 
 @section('script')
     <script>
-        $(document).ready(function() {
-            $(document).on('click')
-        });
 
         // data table pdf, copy, csv
         $(function() {
-            $("#example1").DataTable({
+            $("#categoryTable").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#categoryTable_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -192,13 +189,14 @@
         }
 
 
-    // Initialize DataTable
-    var dataTable = $("#example1").DataTable({
+    // Initialize categoryTable
+    var categoryTable = $("#categoryTable").DataTable({
         responsive: true,
         lengthChange: false,
         autoWidth: false,
         buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
     });
+    console.log("sdf");
 
     // Function to fetch data from the category table
     function fetchCategory() {
@@ -208,12 +206,12 @@
             dataType: "json",
             success: function(response) {
                 if (response.categories) {
-                    // Clear existing rows from DataTable
-                    dataTable.clear();
+                    // Clear existing rows from categoryTable
+                    categoryTable.clear();
 
-                    // Loop through the categories and add rows to DataTable
+                    // Loop through the categories and add rows to categoryTable
                     $.each(response.categories, function(index, category) {
-                        dataTable.row.add([
+                        categoryTable.row.add([
                             category.category_bn,
                             category.category_en,
                             '<button class="btn btn-primary btn-sm"  onclick="categoryDatashow(' + category.id + ')">Update</button>' +
@@ -221,8 +219,8 @@
                         ]);
                     });
 
-                    // Redraw DataTable to reflect changes
-                    dataTable.draw();
+                    // Redraw categoryTable to reflect changes
+                    categoryTable.draw();
                 }
             }
         });

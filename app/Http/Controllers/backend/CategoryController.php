@@ -9,11 +9,16 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        // $categories = Category::all();
 
-        // return view('backend.category.index', compact('categories'));
         return view('backend.category.index');
     }
 

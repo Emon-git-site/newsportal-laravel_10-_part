@@ -14,4 +14,8 @@ class Category extends Model
         'category_en',
         // Add other fields if necessary
     ];
+
+    public function subcategory(){
+        return $this->hasMany(Subcategory::class, 'category_id');
+    }
 }
