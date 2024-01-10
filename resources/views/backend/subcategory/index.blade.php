@@ -185,7 +185,7 @@
             // this is  show delete message
             $(function() {
                 @if (session('subcategory_delete_success'))
-                    toastr.error('{{ session('subcategory_delete_success') }}');
+                    toastr.error('{{ session('subcategory_delete_success ') }}');
                 @endif
             });
 

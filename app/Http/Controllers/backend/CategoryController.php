@@ -32,13 +32,11 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        // dd('dsfsd');
         $validator = Validator::make($request->all(), [
             'add_modal_category_bn' => 'required|unique:categories,category_bn|max:55',
             'add_modal_category_en' => 'required|unique:categories,category_en|max:55',
         ]);
         
-        //    dd($request);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }else{
