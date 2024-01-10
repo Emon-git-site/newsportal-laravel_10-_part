@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\backend\CategoryController;
 use App\Http\Controllers\backend\districtController;
 use App\Http\Controllers\backend\divisionController;
+use App\Http\Controllers\backend\postController;
 use App\Http\Controllers\backend\subcategroyController;
 
 /*
@@ -80,4 +81,10 @@ Route::prefix('/district/')->name('district.')->group(function(){
     Route::get('districtDataSho/{id}', [districtController::class, 'edit' ]);
     Route::put('districtDataSho/{id}', [districtController::class, 'update' ]);
 
+});
+
+// post group route
+
+Route::prefix('/post/')->name('post.')->group(function(){
+    Route::get('index', [postController::class, 'index'])->name('index');
 });

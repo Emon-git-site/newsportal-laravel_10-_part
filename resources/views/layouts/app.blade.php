@@ -37,6 +37,8 @@
     <link rel="stylesheet" href="{{ asset('backend') }}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('backend') }}/plugins/toastr/toastr.min.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="{{ asset('backend') }}/plugins/summernote/summernote-bs4.min.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -109,6 +111,18 @@
     <script src="{{ asset('backend') }}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Summernote -->
     <script src="{{ asset('backend') }}/plugins/summernote/summernote-bs4.min.js"></script>
+    <script>
+        $(function() {
+            // Summernote
+            $('.summernote').summernote()
+
+            // CodeMirror
+            CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
+                mode: "htmlmixed",
+                theme: "monokai"
+            });
+        })
+    </script>
     <!-- overlayScrollbars -->
     <script src="{{ asset('backend') }}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
@@ -136,8 +150,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <!-- Toastr -->
     <script src="{{ asset('backend') }}/plugins/toastr/toastr.min.js"></script>
-    <script>$.ajaxSetup({ cache: false });</script>
-@yield('script')
+
+    <script>
+        $.ajaxSetup({
+            cache: false
+        });
+    </script>
+
+    @yield('script')
 </body>
 
 </html>
