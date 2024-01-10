@@ -19,6 +19,17 @@
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
+
+        @if(count($errors) > 0)
+<div class="p-1">
+    @foreach($errors->all() as $error)
+    <div class="alert alert-warning alert-danger fade show" role="alert">{{$error}} <button type="button" class="close"
+            data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button></div>
+    @endforeach
+</div>
+@endif
         <!-- /.content-header -->
         <div class="container-fluid">
             <div class="card">
@@ -59,18 +70,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post">
+                    <form action="{{ route('category.store') }}" method="post">
                         @csrf
                         <div class="mb-3">
                             <label for="english" class="form-label">Category Name English</label>
-                            <input type="text" class="form-control" id="english" name="category_en" required>
+                            <input type="text" class="form-control" id="english" name="add_modal_category_en" required>
                         </div>
                         <div class="mb-3">
                             <label for="bangla" class="form-label">Category Name Bangla</label>
-                            <input type="text" class="form-control" id="bangla" name="category_bn" required>
+                            <input type="text" class="form-control" id="bangla" name="add_modal_category_bn" required>
                         </div>
 
-                        <button type="submit" class="btn btn-success btn-block">Submit</button>
+                        <button type="submit" class="btn btn-success btn-block">SUBMIT</button>
                     </form>
                 </div>
 
@@ -97,7 +108,7 @@
                     <form action="" method="post">
                         @csrf
                         <div class="mb-3">
-                            <input type="hide" class="form-control" id="category_id" name="id" required>
+                            <input type="hidden" class="form-control" id="category_id" name="id" required>
                         </div>
                         <div class="mb-3">
                             <label for="english" class="form-label">Category Name English</label>

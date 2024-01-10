@@ -24,8 +24,8 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">subCategories Table</h3>
-                    <button class="btn btn-primary btn-sm" style="float: right" data-toggle="modal"
-                        data-target="#add_subcategory_modal">Add New</button>
+                    <button class="btn btn-primary btn-sm" id="new_subcategory" style="float: right" data-toggle="modal"
+                        data-target="#add_subcategory_modal" onclick="catgory_list()">Add New</button>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -73,11 +73,15 @@
                             <label for="bangla"
                                 class="form-label  @error('subcategory_bn') is-invalid @enderror">SubCategory
                                 Name Bangla</label>
-                            <input type="text" class="form-control" id="bangla" name="" required>
+                            <input type="text" class="form-control" id="bangla" name="subcategory_bn" required>
                             @error('subcategory_bn')
                                 <div class="alert text-danger">{{ $message }}</div>
                             @enderror
-
+                            <div class="mb-3">
+                                <label for="bangla" class="form-label">Category Name </label>
+                                <select class="form-control" name="selectedCategory"
+                                    id="selectedCategory_cat_modal"></select>
+                            </div>
                         </div>
 
                         <button type="submit" class="btn btn-success btn-block">Submit</button>
@@ -111,18 +115,20 @@
                         </div>
                         <div class="mb-3">
                             <label for="english" class="form-label">SubCategory Name English</label>
-                            <input type="text" class="form-control" id="english_update" name="subcategory_en" required>
+                            <input type="text" class="form-control " id="english_update" name="subcategory_en" required>
+
                         </div>
                         <div class="mb-3">
                             <label for="bangla" class="form-label">SubCategory Name Bangla</label>
-                            <input type="text" class="form-control" id="bangla_update" name="subcategory_bn" required>
+                            <input type="text" class="form-control " id="bangla_update" name="subcategory_bn" required>
+
                         </div>
                         <div class="mb-3">
                             <label for="bangla" class="form-label">Category Name </label>
                             <select class="form-control" name="selectedCategory" id="selectedCategory"></select>
                         </div>
 
-                        <button type="submit" id="update_subcategory" class="btn btn-success btn-block">Submit</button>
+                        <button type="submit" id="update_subcategory" class="btn btn-success btn-block">UPDATE</button>
                     </form>
                 </div>
 
@@ -136,10 +142,10 @@
 
 @section('script')
     <script>
-        $.ajaxSetup({ cache: false });
-        // $(document).ready(function() {
-        //     $(document).on('click')
-        // });
+        $.ajaxSetup({
+            cache: false
+        });
+
 
         // data table pdf, copy, csv
         $(function() {
@@ -179,7 +185,7 @@
             // this is  show delete message
             $(function() {
                 @if (session('subcategory_delete_success'))
-                    toastr.error('{{ session('category_subdelete_success') }}');
+                    toastr.error('{{ session('subcategory_delete_success') }}');
                 @endif
             });
 
@@ -222,7 +228,7 @@
                 type: "GET",
                 url: "/subcategory/subcategoryDataShow",
                 dataType: "json",
-                cache:false,
+                cache: false,
                 success: function(response) {
                     if (response.subcategories) {
                         // Clear existing rows from DataTable
@@ -252,54 +258,69 @@
 
         fetchsubCategory(); // Call the fetchsubCategory function when the document is ready
 
-
+        //    show the udate modal with data 
         function fetchSubCategory(id) {
-    var subcategoryId = id;
+            var subcategoryId = id;
+            $.ajax({
+                type: "GET",
+                url: "/subcategory/subcategoryDataSho/" + subcategoryId,
+                dataType: "json",
+                cache: false,
+                success: function(response) {
+                    let selectedCategory = response.subcategories.get_category.category_en;
+                        $('input[name="id"]').val(response.subcategories.id);
+                        $('input[name="subcategory_bn"]').val(response.subcategories.subcategory_bn);
+                        $('input[name="subcategory_en"]').val(response.subcategories.subcategory_en);
 
-    // Fetch subcategory data into the update modal using AJAX
-    $.ajax({
-        type: "GET",
-        url: "/subcategory/subcategoryDataSho/" + subcategoryId + "?_=" + new Date().getTime(),      
-          dataType: "json",
-        cache:false,
-        success: function(response) {
-            let selectedCategory = response.subcategories.get_category.category_en;
-            // Set values after the modal is fully shown
-            $('#subcategory_update_modal').on('shown.bs.modal', function() {
-                $('input[name="id"]').val(response.subcategories.id);
-                $('input[name="subcategory_bn"]').val(response.subcategories.subcategory_bn);
-                $('input[name="subcategory_en"]').val(response.subcategories.subcategory_en);
-                // Get category data
+                        // Get category data and make select list with the category data
+                        $.ajax({
+                            type: "GET",
+                            url: "/category/categoryDataShow",
+                            dataType: "json",
+                            cache: false,
+                            success: function(categoryResponse) {
+                                let selectElement = $('#selectedCategory');
+                                console.log(selectedCategory);
+                                // Clear existing options before appending new ones
+                                selectElement.empty();
+                                $.each(categoryResponse.categories, function(index,
+                                    category) {
+                                    let option = $('<option>');
+                                    option.val(category.id);
+                                    option.text(category.category_en);
+                                    if (category.category_en === selectedCategory) {
+                                        option.attr('selected', 'selected');
+                                    }
+                                    selectElement.append(option);
+                                });
+                            }
+                        });
+
+                    // Show the modal after setting values
+                    $('#subcategory_update_modal').modal('show');
+                }
+            });
+        }
+        //    show the category list in add new modal  
+        function catgory_list() {
                 $.ajax({
                     type: "GET",
-                    url: "/category/categoryDataShow?_=" + new Date().getTime(),
+                    url: "/category/categoryDataShow",
                     dataType: "json",
-                    cache:false,
-                    success: function(categoryResponse) {
-                        let selectElement = $('#selectedCategory');
-                        console.log(selectedCategory);
-                        // Clear existing options before appending new ones
-                        selectElement.empty();
-                        $.each(categoryResponse.categories, function(index, category) {
+                    cache: false,
+                    success: function(SubcategoryResponse) {
+                        let selectElement = $('#selectedCategory_cat_modal');
+                        selectElement.empty(); 
+                        $.each(SubcategoryResponse.categories, function(index, category) {
                             let option = $('<option>');
                             option.val(category.id);
                             option.text(category.category_en);
-                              if (category.category_en === selectedCategory) {
-                                option.attr('selected', 'selected');
-                                 }
-                            selectElement.append(option);
+                            selectElement.append(
+                            option); 
                         });
                     }
                 });
-            });
-
-            // Show the modal after setting values
-            $('#subcategory_update_modal').modal('show');
         }
-    });
-}
-
-
 
 
         $.ajaxSetup({
@@ -308,19 +329,19 @@
             }
         });
 
-        // update subcategory modal data show
+        // update subcategory modal data 
         $(document).on('click', '#update_subcategory', function(e) {
             e.preventDefault();
             let subcategory_id = $('#subcategory_id').val();
             let subcategoryData = {
                 'subcategory_bn': $('#bangla_update').val(),
-                'subcategory_en': $('#english_update').val()
+                'subcategory_en': $('#english_update').val(),
+                'category_id': $('#selectedCategory').val()
             };
-
 
             $.ajax({
                 type: "PUT",
-                url: "/subcategory/categoryDataSho/" + subcategory_id,
+                url: "/subcategory/subcategoryDataSho/" + subcategory_id,
                 dataType: "json",
                 data: subcategoryData,
                 success: function(response) {
@@ -328,16 +349,14 @@
                     $('input[name="subcategory_bn"]').val(response.subcategory_bn);
                     $('input[name="subcategory_en"]').val(response.subcategory_en);
 
-                    $('#category_update_modal').modal('hide');
-                    // console.log(fetchSubCategory());
-
+                    $('#subcategory_update_modal').modal('hide');
                     // Display toastr message
 
                     if (response.status == 200) {
                         toastr.success(response.subcategory_update);
                     }
 
-
+                    fetchsubCategory();
                 }
             });
 

@@ -24,25 +24,31 @@ class CategoryController extends Controller
 
     public function categoryDataShow()
     {
-        $categories = Category::all();
-
+        $categories = Category::latest()->get();
         return response()->json([
            'categories' => $categories,
-         ])->header('Cache-Control', 'no-cache, no-store, must-revalidate')
-         ->header('Pragma', 'no-cache')
-         ->header('Expires', '0');   
+         ]);   
      }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'category_bn' => 'required|unique:categories|max:55',
-            'category_en' => 'required|unique:categories|max:55',
+        // dd('dsfsd');
+        $validator = Validator::make($request->all(), [
+            'add_modal_category_bn' => 'required|unique:categories,category_bn|max:55',
+            'add_modal_category_en' => 'required|unique:categories,category_en|max:55',
         ]);
         
-        Category::create($request->all());
+        //    dd($request);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }else{
 
-        return redirect()->back()->with('new_category_insert_success', 'New Categroy Insert Sucessfully');
+            $category = new Category();
+            $category->category_bn = $request->add_modal_category_bn ;
+            $category->category_en = $request->add_modal_category_en ;
+            $category->save();
+       return redirect()->back()->with('new_category_insert_success', 'New Categroy Insert Sucessfully');
+        }
     }
 
     public function edit($id)
@@ -76,7 +82,6 @@ class CategoryController extends Controller
             ]);
         }
     
-        // Continue with the update logic if validation passes
     }
     
     
