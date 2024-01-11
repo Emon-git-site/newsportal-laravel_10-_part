@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -29,8 +30,8 @@ return new class extends Migration
             $table->integer('first_section')->nullable();
             $table->integer('first_section_thumbnail')->nullable();
             $table->integer('bigthumbnail')->nullable();
-            $table->string('post_date')->nullable();
-            $table->string('post_month')->nullable();
+            $table->string('post_date')->default(DB::raw('CURRENT_DATE'));
+            $table->string('post_month')->default(DB::raw('DATE_FORMAT(CURRENT_DATE, "%Y-%m")'));
         });
     }
 

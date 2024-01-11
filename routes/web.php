@@ -87,4 +87,10 @@ Route::prefix('/district/')->name('district.')->group(function(){
 
 Route::prefix('/post/')->name('post.')->group(function(){
     Route::get('index', [postController::class, 'index'])->name('index');
+    Route::post('store', [postController::class, 'store'])->name('store');
+
+
+    // ajax purpose
+    Route::get('subcategoryDatashow/{id}', [postController::class, 'getSubcategory']);
+    Route::get('districtDatashow/{id}', [postController::class, 'getDistrict']);
 });

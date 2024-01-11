@@ -66,8 +66,8 @@ class subcategroyController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'subcategory_bn' => 'required|unique:sub_categories|max:55',
-            'subcategory_en' => 'required|unique:sub_categories|max:55',
+            'subcategory_bn' => 'required|max:55',
+            'subcategory_en' => 'required|max:55',
         ]);
 
         if ($validator->fails()) {
