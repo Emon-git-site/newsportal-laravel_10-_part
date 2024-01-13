@@ -30,8 +30,10 @@ return new class extends Migration
             $table->integer('first_section')->nullable();
             $table->integer('first_section_thumbnail')->nullable();
             $table->integer('bigthumbnail')->nullable();
-            $table->string('post_date')->default(DB::raw('CURRENT_DATE'));
-            $table->string('post_month')->default(DB::raw('DATE_FORMAT(CURRENT_DATE, "%Y-%m")'));
+            $table->date('post_date')->default(now());
+            $table->string('post_month')->default(now()->format('Y-m'));
+            $table->timestamps();
+
         });
     }
 

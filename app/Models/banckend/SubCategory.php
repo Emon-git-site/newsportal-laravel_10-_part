@@ -18,7 +18,13 @@ class Subcategory extends Model
         'subcategory_en',
          ];
         
-         public function getCategory(){
+         public function getCategory()
+         {
             return $this->belongsTo(Category::class, 'category_id');
-        }    
+         }    
+
+         public function post()
+         {
+            return $this->hasMany(Post::class, 'subcategory_id');
+         }
 }

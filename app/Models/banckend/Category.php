@@ -2,8 +2,9 @@
 
 namespace App\Models\banckend;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\banckend\Post;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
@@ -15,7 +16,14 @@ class Category extends Model
         // Add other fields if necessary
     ];
 
-    public function subcategory(){
+    public function subcategory()
+    {
         return $this->hasMany(Subcategory::class, 'category_id');
     }
+
+    public function post()
+    {
+        return $this->hasMany(Post::class, 'Category_id');
+    }
+
 }

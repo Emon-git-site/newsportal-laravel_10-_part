@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('districts', function (Blueprint $table) {
-            $table->id();
-            $table->string('division_id');
-            $table->string('district_en');
-            $table->string('district_bn');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('districts')) {
+            Schema::create('districts', function (Blueprint $table) {
+                $table->id();
+                $table->string('division_id');
+                $table->string('district_en');
+                $table->string('district_bn');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\backend;
 
-use App\Models\Division;
+use App\Models\banckend\Division;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;

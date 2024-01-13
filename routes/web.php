@@ -8,6 +8,7 @@ use App\Http\Controllers\backend\CategoryController;
 use App\Http\Controllers\backend\districtController;
 use App\Http\Controllers\backend\divisionController;
 use App\Http\Controllers\backend\postController;
+use App\Http\Controllers\backend\settingController;
 use App\Http\Controllers\backend\subcategroyController;
 
 /*
@@ -81,16 +82,26 @@ Route::prefix('/district/')->name('district.')->group(function(){
     Route::get('districtDataSho/{id}', [districtController::class, 'edit' ]);
     Route::put('districtDataSho/{id}', [districtController::class, 'update' ]);
 
-});
+}); 
 
 // post group route
 
 Route::prefix('/post/')->name('post.')->group(function(){
     Route::get('index', [postController::class, 'index'])->name('index');
+    Route::get('create', [postController::class, 'create'])->name('create');
     Route::post('store', [postController::class, 'store'])->name('store');
+    Route::get('edit/{id}', [postController::class, 'edit'])->name('edit');
+    Route::post('update/{id}', [postController::class, 'update'])->name('update');
+    Route::get('delete/{id}', [postController::class, 'destroy'])->name('delete');
 
 
     // ajax purpose
     Route::get('subcategoryDatashow/{id}', [postController::class, 'getSubcategory']);
     Route::get('districtDatashow/{id}', [postController::class, 'getDistrict']);
 });
+
+// setting route
+
+Route::get('setting/social', [settingController::class, 'socialSetting'])->name('setting.social');
+Route::post('setting/social/update/{id}', [settingController::class, 'updateSocial'])->name('setting.social.update');
+Route::get('setting/seo', [settingController::class, 'seoSetting'])->name('setting.seo');

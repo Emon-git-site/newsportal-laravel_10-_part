@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\banckend;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Seo extends Model
 {
     use HasFactory;
 }
