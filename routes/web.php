@@ -105,3 +105,4 @@ Route::prefix('/post/')->name('post.')->group(function(){
 Route::get('setting/social', [settingController::class, 'socialSetting'])->name('setting.social');
 Route::post('setting/social/update/{id}', [settingController::class, 'updateSocial'])->name('setting.social.update');
 Route::get('setting/seo', [settingController::class, 'seoSetting'])->name('setting.seo');
+Route::post('setting/seo/update/{id}', [settingController::class, 'updateSeo'])->name('setting.seo.update');

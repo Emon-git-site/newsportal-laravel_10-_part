@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\backend;
 
-use App\Http\Controllers\Controller;
-use App\Models\banckend\Social;
+use App\Models\banckend\Seo;
 use Illuminate\Http\Request;
+use App\Models\banckend\Social;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 
 class settingController extends Controller
@@ -26,6 +27,22 @@ class settingController extends Controller
         $social->update($request->all());
 
         $notification = ['social_update_message' => "Social Link Updated Successfully"];
+        return Redirect()->back()->with($notification);
+    }
+
+    
+    public function seoSetting()
+    {
+        $seo = Seo::first();
+        return view('backend.setting.seo', compact('seo')); 
+    }
+
+    public function updateSeo(Request $request, $id)
+    {
+        $seo = Seo::find($id);
+        $seo->update($request->all());
+
+        $notification = ['seo_update_message' => "Seo Updated Successfully"];
         return Redirect()->back()->with($notification);
     }
 }
