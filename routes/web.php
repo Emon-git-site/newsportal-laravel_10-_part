@@ -111,3 +111,9 @@ Route::post('setting/seo/update/{id}', [settingController::class, 'updateSeo'])-
 // prayer setting route
 Route::get('setting/namaz', [settingController::class, 'namazSetting'])->name('setting.namaz');
 Route::post('setting/namaz/update/{id}', [settingController::class, 'updatenamaz'])->name('setting.namaz.update');
+
+// livetv setting route
+Route::get('setting/livetv', [settingController::class, 'livetvSetting'])->name('setting.livetv');
+Route::post('setting/livetv/update/{id}', [settingController::class, 'updatelivetv'])->name('setting.livetv.update');
+Route::get('setting/livetv/active/{id}', [settingController::class, 'activeLivetv'])->name('setting.livetv.active');
+Route::get('setting/livetv/deactive/{id}', [settingController::class, 'deactiveLivetv'])->name('setting.livetv.deactive');

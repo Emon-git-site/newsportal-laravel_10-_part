@@ -147,6 +147,12 @@
                                 <p>Prayer Time</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('setting.livetv') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Live TV</p>
+                            </a>
+                        </li>
  
                     </ul>
                 </li>

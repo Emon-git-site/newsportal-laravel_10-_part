@@ -6,6 +6,7 @@ use App\Models\banckend\Seo;
 use Illuminate\Http\Request;
 use App\Models\banckend\Social;
 use App\Http\Controllers\Controller;
+use App\Models\banckend\livetv;
 use App\Models\banckend\Namaz;
 use Illuminate\Support\Facades\Redirect;
 
@@ -64,4 +65,36 @@ class settingController extends Controller
         $notification = ['namaz_update_message' => "Namaz Updated Successfully"];
         return Redirect()->back()->with($notification);
     }
+    // end namaz setting
+
+    // live tv setting
+    public function livetvSetting()
+    {
+        $livetv = livetv::first();
+        return view('backend.setting.livetv', compact('livetv')); 
+    }
+    public function updatelivetv(Request $request, $id)
+    {
+        $livetv = livetv::find($id);
+        $livetv->update($request->all());
+
+        $notification = ['livetv_update_message' => "LiveTV Updated Successfully"];
+        return Redirect()->back()->with($notification);
+    }
+
+    public function activeLivetv($id)
+    {
+        $livetv = livetv::find($id);
+        $livetv->update(['status' =>1]);
+        $notification = ['livetv_active_message' => "LiveTV Activate Successfully"];
+        return Redirect()->back()->with($notification);
+    }
+    public function deactiveLivetv($id)
+    {
+        $livetv = livetv::find($id);
+        $livetv->update(['status' =>0]);
+        $notification = ['livetv_deactive_message' => "LiveTV DeActivate Successfully"];
+        return Redirect()->back()->with($notification);
+    }
+
 }
