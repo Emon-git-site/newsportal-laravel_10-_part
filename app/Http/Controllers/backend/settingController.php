@@ -6,6 +6,7 @@ use App\Models\banckend\Seo;
 use Illuminate\Http\Request;
 use App\Models\banckend\Social;
 use App\Http\Controllers\Controller;
+use App\Models\banckend\Namaz;
 use Illuminate\Support\Facades\Redirect;
 
 class settingController extends Controller
@@ -15,6 +16,7 @@ class settingController extends Controller
         $this->middleware('auth');
     }
 
+    // social setting 
     public function socialSetting()
     {
         $social = Social::first();
@@ -29,8 +31,9 @@ class settingController extends Controller
         $notification = ['social_update_message' => "Social Link Updated Successfully"];
         return Redirect()->back()->with($notification);
     }
-
+    // end social settiing
     
+    // seo setting
     public function seoSetting()
     {
         $seo = Seo::first();
@@ -43,6 +46,22 @@ class settingController extends Controller
         $seo->update($request->all());
 
         $notification = ['seo_update_message' => "Seo Updated Successfully"];
+        return Redirect()->back()->with($notification);
+    }
+    // end seo setting
+
+    // namaz setting
+    public function namazSetting()
+    {
+        $namaz = Namaz::first();
+        return view('backend.setting.namaz', compact('namaz')); 
+    }
+    public function updatenamaz(Request $request, $id)
+    {
+        $namaz = Namaz::find($id);
+        $namaz->update($request->all());
+
+        $notification = ['namaz_update_message' => "Namaz Updated Successfully"];
         return Redirect()->back()->with($notification);
     }
 }

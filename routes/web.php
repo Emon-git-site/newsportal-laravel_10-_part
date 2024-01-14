@@ -100,9 +100,14 @@ Route::prefix('/post/')->name('post.')->group(function(){
     Route::get('districtDatashow/{id}', [postController::class, 'getDistrict']);
 });
 
-// setting route
-
+// social setting route
 Route::get('setting/social', [settingController::class, 'socialSetting'])->name('setting.social');
 Route::post('setting/social/update/{id}', [settingController::class, 'updateSocial'])->name('setting.social.update');
+
+// seo setting route
 Route::get('setting/seo', [settingController::class, 'seoSetting'])->name('setting.seo');
 Route::post('setting/seo/update/{id}', [settingController::class, 'updateSeo'])->name('setting.seo.update');
+
+// prayer setting route
+Route::get('setting/namaz', [settingController::class, 'namazSetting'])->name('setting.namaz');
+Route::post('setting/namaz/update/{id}', [settingController::class, 'updatenamaz'])->name('setting.namaz.update');
