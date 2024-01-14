@@ -4,10 +4,11 @@ namespace App\Http\Controllers\backend;
 
 use App\Models\banckend\Seo;
 use Illuminate\Http\Request;
-use App\Models\banckend\Social;
-use App\Http\Controllers\Controller;
-use App\Models\banckend\livetv;
 use App\Models\banckend\Namaz;
+use App\Models\banckend\livetv;
+use App\Models\banckend\Social;
+use App\Models\banckend\Notice;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 
 class settingController extends Controller
@@ -94,6 +95,37 @@ class settingController extends Controller
         $livetv = livetv::find($id);
         $livetv->update(['status' =>0]);
         $notification = ['livetv_deactive_message' => "LiveTV DeActivate Successfully"];
+        return Redirect()->back()->with($notification);
+    }
+    // end  live tv setting 
+
+    // notice setting
+    public function noticeSetting()
+    {
+        $notice = Notice::first();
+        return view('backend.setting.notice', compact('notice')); 
+    } 
+    public function updatenotice(Request $request, $id)
+    {
+        $notice = Notice::find($id);
+        $notice->update($request->all());
+
+        $notification = ['notice_update_message' => "notice Updated Successfully"];
+        return Redirect()->back()->with($notification);
+    }
+
+    public function activenotice($id)
+    {
+        $notice = Notice::find($id);
+        $notice->update(['status' =>1]);
+        $notification = ['notice_active_message' => "notice Activate Successfully"];
+        return Redirect()->back()->with($notification);
+    }
+    public function deactivenotice($id)
+    {
+        $notice = Notice::find($id);
+        $notice->update(['status' =>0]);
+        $notification = ['notice_deactive_message' => "notice DeActivate Successfully"];
         return Redirect()->back()->with($notification);
     }
 

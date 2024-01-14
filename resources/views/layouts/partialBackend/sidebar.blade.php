@@ -153,6 +153,12 @@
                                 <p>Live TV</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('setting.notice') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Notice</p>
+                            </a>
+                        </li>
  
                     </ul>
                 </li>

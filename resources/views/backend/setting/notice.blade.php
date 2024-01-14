@@ -8,12 +8,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Live TV Setting</h1>
+                        <h1 class="m-0">Notice Setting</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Live TV Setting</li>
+                            <li class="breadcrumb-item active">Notice Setting</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -27,27 +27,27 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Live TV Setting</h3>
-                                @if($livetv->status == 1)
-                                <a href="{{ route('setting.livetv.deactive', $livetv->id) }}" style="float: right" class="btn btn-danger">DeActive</a>
+                                <h3 class="card-title">Notice Setting</h3>
+                                @if($notice->status == 1)
+                                <a href="{{ route('setting.notice.deactive', $notice->id) }}" style="float: right" class="btn btn-danger">DeActive</a>
                                 @else
-                                <a href="{{ route('setting.livetv.active', $livetv->id) }}" style="float: right" class="btn btn-success">Active</a>
+                                <a href="{{ route('setting.notice.active', $notice->id) }}" style="float: right" class="btn btn-success">Active</a>
                                 @endif
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form action="{{ route('setting.livetv.update', $livetv->id) }}" method="post" >
+                            <form action="{{ route('setting.notice.update', $notice->id) }}" method="post" >
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="embed_code">Embed Code</label>
-                                        <textarea class="form-control" name="embed_code">
-                                            {{ $livetv->embed_code }}
+                                        <label for="notice">Notice</label>
+                                        <textarea class="form-control" name="notice">
+                                            {{ $notice->notice }}
                                            </textarea>
-                                           @if($livetv->status==1)
-                                           <small class="text-success">Now Live TV are Active Now</small>
+                                           @if($notice->status==1)
+                                           <small class="text-success">Now Notice are Active Now</small>
                                            @else
-                                           <small class="text-danger">Now Live TV are DeActive Now</small>
+                                           <small class="text-danger">Now Notice are DeActive Now</small>
                                            @endif
                                     </div>
                                   <div class="card-footer">
@@ -82,20 +82,20 @@
 
             // this is show success update message
             $(function() {
-                @if (session('livetv_update_message'))
-                    toastr.success('{{ session('livetv_update_message') }}');
+                @if (session('notice_update_message'))
+                    toastr.success('{{ session('notice_update_message') }}');
                 @endif
             });
             // this is show success active message
             $(function() {
-                @if (session('livetv_active_message'))
-                    toastr.success('{{ session('livetv_active_message') }}');
+                @if (session('notice_active_message'))
+                    toastr.success('{{ session('notice_active_message') }}');
                 @endif
             });
             // this is show success deactive message
             $(function() {
-                @if (session('livetv_deactive_message'))
-                    toastr.error('{{ session('livetv_deactive_message') }}');
+                @if (session('notice_deactive_message'))
+                    toastr.error('{{ session('notice_deactive_message') }}');
                 @endif
             });
 
