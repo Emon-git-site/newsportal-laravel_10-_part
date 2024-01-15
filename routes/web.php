@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\backend\CategoryController;
 use App\Http\Controllers\backend\districtController;
 use App\Http\Controllers\backend\divisionController;
+use App\Http\Controllers\backend\galleryController;
 use App\Http\Controllers\backend\postController;
 use App\Http\Controllers\backend\settingController;
 use App\Http\Controllers\backend\subcategroyController;
@@ -134,3 +135,20 @@ Route::get('setting/website/delete/{id}', [settingController::class, 'destroy'])
 Route::get('website/websiteDataShow', [settingController::class, 'websiteDataShow']);
 Route::get('website/websiteDataSho/{id}', [settingController::class, 'edit']);
 Route::put('website/update/{id}', [settingController::class, 'update']);
+
+// gallery group route
+Route::prefix('gallery/')->name('gallery.')->group(function(){
+    // photo setting
+    Route::get('photo', [galleryController::class, 'photo'])->name('photo');
+    Route::post('photo/storePhoto', [galleryController::class, 'storePhoto'])->name('photo.storePhoto');
+    Route::get('photo/editPhoto/{id}', [galleryController::class, 'editPhoto'])->name('photo.editPhoto');
+    Route::post('photo/update/{id}', [galleryController::class, 'update'])->name('photo.update');
+    Route::get('photo/delete/{id}', [galleryController::class, 'destroyPhoto'])->name('photo.delete');
+
+    // video setting
+    Route::get('video', [galleryController::class, 'video'])->name('video');
+    Route::post('video/store', [galleryController::class, 'store'])->name('video.store');
+    Route::get('video/edit', [galleryController::class, 'edit'])->name('video.edit');
+    Route::post('video/update/{id}', [galleryController::class, 'update'])->name('video.update');
+    Route::get('video/delete/{id}', [galleryController::class, 'destroy'])->name('video.delete');
+});
