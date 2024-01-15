@@ -6,10 +6,12 @@ use App\Models\banckend\Seo;
 use Illuminate\Http\Request;
 use App\Models\banckend\Namaz;
 use App\Models\banckend\livetv;
-use App\Models\banckend\Social;
 use App\Models\banckend\Notice;
+use App\Models\banckend\Social;
+use App\Models\banckend\Website;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class settingController extends Controller
 {
@@ -128,5 +130,66 @@ class settingController extends Controller
         $notification = ['notice_deactive_message' => "notice DeActivate Successfully"];
         return Redirect()->back()->with($notification);
     }
+    // end notice setting
 
+    // important website
+    public function websiteSetting()
+    {
+        return view('backend.setting.website'); 
+    } 
+
+    public function websiteDataShow()
+    {
+        $websites = Website::latest()->get();
+        return response()->json([
+           'websites' => $websites,
+         ]);   
+     }
+
+    public function store(Request $request)
+    {
+        Website::create($request->all());
+        $notification = ['new_website_insert_message' => "New Website Inserted Successfully"];
+        return Redirect()->back()->with($notification);
+    }
+
+
+    public function edit($id)
+    {
+         $website = Website::find($id);
+         return response()->json([
+            'website' => $website,
+          ]);  
+    }
+    
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'website_name' => 'required|max:55',
+            'website_link' => 'required|max:55',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->errors(), // Get the first error message
+            ]);
+        }else{
+            $website = Website::find($id);
+            $website->website_name  =  $request->website_name;
+            $website->website_link  =  $request->website_link;
+            $website->update();
+            return response()->json([
+                'status' => 200,
+                'website_update' => 'Website Updated Successfully',
+            ]);
+        }
+    }
+
+    public function destroy($id)
+    {
+        Website::find($id)->delete();
+        $notification = ['website_delete_message' => " Website Deleted Successfully"];
+        return Redirect()->back()->with($notification);
+    }
 }

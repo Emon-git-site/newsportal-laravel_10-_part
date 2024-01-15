@@ -159,6 +159,12 @@
                                 <p>Notice</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('setting.website') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Important Webite</p>
+                            </a>
+                        </li>
  
                     </ul>
                 </li>

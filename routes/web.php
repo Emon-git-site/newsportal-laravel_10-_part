@@ -123,3 +123,14 @@ Route::get('setting/notice', [settingController::class, 'noticeSetting'])->name(
 Route::post('setting/notice/update/{id}', [settingController::class, 'updatenotice'])->name('setting.notice.update');
 Route::get('setting/notice/active/{id}', [settingController::class, 'activenotice'])->name('setting.notice.active');
 Route::get('setting/notice/deactive/{id}', [settingController::class, 'deactivenotice'])->name('setting.notice.deactive');
+
+// important website
+Route::get('setting/website', [settingController::class, 'websiteSetting'])->name('setting.website');
+Route::post('setting/website/store', [settingController::class, 'store'])->name('setting.website.store');
+Route::get('setting/website/delete/{id}', [settingController::class, 'destroy']);
+
+
+// ajax purpose
+Route::get('website/websiteDataShow', [settingController::class, 'websiteDataShow']);
+Route::get('website/websiteDataSho/{id}', [settingController::class, 'edit']);
+Route::put('website/update/{id}', [settingController::class, 'update']);
